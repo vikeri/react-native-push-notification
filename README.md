@@ -219,19 +219,26 @@ In the location notification json specify the full file name:
     soundName: 'my_sound.mp3'
 
 ## Cancelling notifications
-`PushNotification.cancelLocalNotifications(details: Object)` 
 
-The `details` parameter differs between iOS and Android. If none is supplied all notifications are cleared from the notification center.
+### 1) cancelLocalNotifications
 
-For iOS it is a `userInfo` object.
+`PushNotification.cancelLocalNotifications(details);` 
 
-For Android, it should be of the form: `{id: "<notification-id>"}`; where `<notification-id>` is the notification ID 
-used to schedule the notification.  If the id is that of a scheduled notification, then that schedule will be cancelled.
+The the `details` parameter allows you to specify a `userInfo` dictionary that can be used to match one or more *scheduled* notifications.  Each
+matched notification is cancelled and its alerts removed from the notification centre.  The RN docs suggest this is an optional parameter, but
+it is not.
 
-Android example:
 ```javascript
 PushNotification.cancelLocalNotifications({id: '123'});
 ```
+
+### 2) cancelAllLocalNotifications
+
+`PushNotification.cancelAllLocalNotifications()` 
+
+Cancels all scheduled notifications AND clears the notifications alerts that are in the notification centre.
+
+*NOTE: there is currently no api for removing specific notification alerts from the notification centre.*
 
 ## Sending Notification Data From Server
 Same parameters as `PushNotification.localNotification()`
