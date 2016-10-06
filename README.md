@@ -1,8 +1,8 @@
 # Fork, do not use
 
 # React Native Push Notifications
-[![npm version](https://badge.fury.io/js/react-native-push-notification.svg?update=4)](http://badge.fury.io/js/react-native-push-notification)
-[![npm downloads](https://img.shields.io/npm/dm/react-native-push-notification.svg?update=4)](http://badge.fury.io/js/react-native-push-notification)
+[![npm version](https://badge.fury.io/js/react-native-push-notification.svg?update=5)](http://badge.fury.io/js/react-native-push-notification)
+[![npm downloads](https://img.shields.io/npm/dm/react-native-push-notification.svg?update=5)](http://badge.fury.io/js/react-native-push-notification)
 
 React Native Local and Remote Notifications for iOS and Android
 
@@ -13,7 +13,7 @@ React Native Local and Remote Notifications for iOS and Android
 | **1.0.8**          | **0.28**   | [Open](https://github.com/zo0r/react-native-push-notification/blob/2eafd1961273ca6a82ad4dd6514fbf1d1a829089/README.md)   |
 | **2.0.1**          | **0.29**   | [Open](https://github.com/zo0r/react-native-push-notification/blob/c7ab7cd84ea19e42047379aefaf568bb16a81936/README.md)   |
 | **2.0.2**          | **0.30, 0.31, 0.32**   | [Open](https://github.com/zo0r/react-native-push-notification/blob/a0f7d44e904ba0b92933518e5bf6b444f1c90abb/README.md)   |
-| **>= 2.1.0**          | **>= 0.33**   | [Open](https://github.com/zo0r/react-native-push-notification/blob/f8f9841772dec5c5249a75db6b87a4b2d901d0c2/README.md)   |
+| **>= 2.1.0**          | **>= 0.33**   | [Open](https://github.com/zo0r/react-native-push-notification/blob/a359e5c00954aa324136eaa9808333d6ca246171/README.md)   |
 
 
 ## Installation
@@ -167,10 +167,8 @@ Notification object example:
 }
 ```
 
-## Local and Schedule Notifications
+## Local Notifications
 `PushNotification.localNotification(details: Object)`
-
-`PushNotification.localNotificationSchedule(details: Object)`
 
 EXAMPLE:
 ```javascript
@@ -196,18 +194,25 @@ PushNotification.localNotification({
     userInfo: // (optional) default: null (object containing additional notification data)
 
     /* iOS and Android properties */
-    title: "My Notification Title", // (optional, for iOS this is only used in apple watch, the title will be the app name in other devices)
+    title: "My Notification Title", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
     message: "My Notification Message" // (required)
     playSound: false, // (optional) default: true
     soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
     number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
 });
+```
 
+## Scheduled Notifications
+`PushNotification.localNotificationSchedule(details: Object)`
+
+EXAMPLE:
+```javascript
 PushNotification.localNotificationSchedule({
   message: "My Notification Message", // (required)
   date: new Date(Date.now() + (60 * 1000)) // in 60 secs
 });
 ```
+
 ## Custom sounds
 
 In android, add your custom sound file to `[project_root]/android/app/src/main/res/raw`
@@ -240,13 +245,19 @@ Cancels all scheduled notifications AND clears the notifications alerts that are
 
 *NOTE: there is currently no api for removing specific notification alerts from the notification centre.*
 
+## Set application badge icon
+
+`PushNotification.setApplicationIconBadgeNumber(number: number)` 
+
+Works natively in iOS.
+
+Uses the [ShortcutBadger](https://github.com/leolin310148/ShortcutBadger) on Android, and as such with not work on all Android devices.
+
 ## Sending Notification Data From Server
 Same parameters as `PushNotification.localNotification()`
 
 ## iOS Only Methods
 `PushNotification.checkPermissions(callback: Function)` Check permissions
-
-`PushNotification.setApplicationIconBadgeNumber(number: number)` set badge number
 
 `PushNotification.getApplicationIconBadgeNumber(callback: Function)` get badge number
 
