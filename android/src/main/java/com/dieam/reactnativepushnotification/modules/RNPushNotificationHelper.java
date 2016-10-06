@@ -370,6 +370,9 @@ public class RNPushNotificationHelper {
                 case "week":
                     newFireDate = fireDate + 7 * ONE_DAY;
                     break;
+                case "two-weeks":
+                    newFireDate = fireDate + 14 * ONE_DAY;
+                    break;
                 case "day":
                     newFireDate = fireDate + ONE_DAY;
                     break;
