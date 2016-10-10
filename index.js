@@ -18,6 +18,7 @@ var Notifications = {
 	onNotification: false,
   onRemoteFetch: false,
 	isLoaded: false,
+	hasPoppedInitialNotification: false,
 
 	isPermissionsRequestPending: false,
 
@@ -84,16 +85,17 @@ Notifications.configure = function(options: Object) {
 		this.callNative( 'addEventListener', [ 'localNotification', this._onNotification ] );
 		Platform.OS === 'android' ? this.callNative( 'addEventListener', [ 'remoteFetch', this._onRemoteFetch ] ) : null
 
-		if ( typeof options.popInitialNotification === 'undefined' ||
-			 options.popInitialNotification === true ) {
-			this.popInitialNotification(function(firstNotification) {
-				if ( firstNotification !== null ) {
-					this._onNotification(firstNotification, true);
-				}
-			}.bind(this));
-		}
-
 		this.isLoaded = true;
+	}
+
+	if ( this.hasPoppedInitialNotification === false &&
+			( options.popInitialNotification === undefined || options.popInitialNotification === true ) ) {
+		this.popInitialNotification(function(firstNotification) {
+			if ( firstNotification !== null ) {
+				this._onNotification(firstNotification, true);
+			}
+		}.bind(this));
+		this.hasPoppedInitialNotification = true;
 	}
 
 	if ( options.requestPermissions !== false ) {
@@ -157,7 +159,7 @@ Notifications.localNotification = function(details: Object) {
 Notifications.localNotificationSchedule = function(details: Object) {
 	if ( Platform.OS === 'ios' ) {
 		this.handler.scheduleLocalNotification({
-			fireDate: details.date,
+			fireDate: details.date.toISOString(),
 			alertBody: details.message,
 			userInfo: details.userInfo
 		});
@@ -182,7 +184,7 @@ Notifications._onRemoteFetch = function(notificationData: Object) {
 	if ( this.onRemoteFetch !== false ) {
 		this.onRemoteFetch(notificationData)
 	}
-} 
+}
 
 Notifications._onNotification = function(data, isFromBackground = null) {
 	if ( isFromBackground === null ) {
