@@ -1,6 +1,6 @@
 {
   "name": "forked-react-native-push-notification",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "React Native Local and Remote Notifications",
   "main": "index",
   "scripts": {
